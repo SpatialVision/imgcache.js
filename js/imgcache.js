@@ -45,6 +45,9 @@ var ImgCache = {
                         if (level === LOG_LEVEL_ERROR) { str = 'ERROR: ' + str; }
                         console.log(str);
                     }
+            },
+            info:function(log, args) {
+                console.log(log, args);
             }
         },
         ready: false,
@@ -686,6 +689,7 @@ var ImgCache = {
     // Reminder: this is an asynchronous method!
     // Answer to the question comes in response_callback as the second argument (first being the path)
     ImgCache.getCachedFile = function (img_src, response_callback) {
+        ImgCache.overridables.log('ImgCache.getCachedFile ' + img_src + ' ' + Private.isImgCacheLoaded(), LOG_LEVEL_INFO);
         // sanity check
         if (!Private.isImgCacheLoaded() || !response_callback) {
             return;
@@ -702,6 +706,7 @@ var ImgCache = {
             }
         }
 
+        ImgCache.overridables.log('ImgCache.getCachedFile ' + path, LOG_LEVEL_INFO);
         // try to get the file entry: if it fails, there's no such file in the cache
         ImgCache.attributes.filesystem.root.getFile(
             path,
