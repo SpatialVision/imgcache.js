@@ -364,14 +364,16 @@ var ImgCache = {
 
     Private.createCacheDir = function (success_callback, error_callback) {
         if (!ImgCache.attributes.filesystem) {
-            ImgCache.overridables.log('Filesystem instance was not initialised', LOG_LEVEL_ERROR);
-            if (error_callback) { error_callback(); }
+            var msg = 'Filesystem instance was not initialised';
+            ImgCache.overridables.log(msg, LOG_LEVEL_ERROR);
+            if (error_callback) { error_callback(msg); }
             return;
         }
 
         var _fail = function (error) {
-            ImgCache.overridables.log('Failed to get/create local cache directory: ' + error.code, LOG_LEVEL_ERROR);
-            if (error_callback) { error_callback(); }
+            var msg = 'Failed to get/create local cache directory: ' + error.code;
+            ImgCache.overridables.log(msg, LOG_LEVEL_ERROR);
+            if (error_callback) { error_callback(msg); }
         };
         var _getDirSuccess = function (dirEntry) {
             ImgCache.attributes.dirEntry = dirEntry;
@@ -582,8 +584,9 @@ var ImgCache = {
             }, error_callback);
         };
         var _fail = function (error) {
-            ImgCache.overridables.log('Failed to initialise LocalFileSystem ' + error.code, LOG_LEVEL_ERROR);
-            if (error_callback) { error_callback(); }
+            var msg = 'Failed to initialise LocalFileSystem ' + error.code;
+            ImgCache.overridables.log(msg, LOG_LEVEL_ERROR);
+            if (error_callback) { error_callback(msg); }
         };
         if (Helpers.isCordova() && window.requestFileSystem) {
             // PHONEGAP
@@ -593,8 +596,9 @@ var ImgCache = {
             var savedFS = window.requestFileSystem || window.webkitRequestFileSystem;
             window.storageInfo = window.storageInfo || (ImgCache.options.usePersistentCache ? navigator.webkitPersistentStorage : navigator.webkitTemporaryStorage);
             if (!window.storageInfo) {
-                ImgCache.overridables.log('Your browser does not support the html5 File API', LOG_LEVEL_WARNING);
-                if (error_callback) { error_callback(); }
+                var msg = 'Your browser does not support the html5 File API';
+                ImgCache.overridables.log(msg, LOG_LEVEL_WARNING);
+                if (error_callback) { error_callback(msg); }
                 return;
             }
             // request space for storage
@@ -608,8 +612,9 @@ var ImgCache = {
                 },
                 function (error) {
                     /* error*/
-                    ImgCache.overridables.log('Failed to request quota: ' + error.message, LOG_LEVEL_ERROR);
-                    if (error_callback) { error_callback(); }
+                    var msg = 'Failed to request quota: ' + error.message;
+                    ImgCache.overridables.log(msg, LOG_LEVEL_ERROR);
+                    if (error_callback) { error_callback(msg); }
                 }
             );
         }
